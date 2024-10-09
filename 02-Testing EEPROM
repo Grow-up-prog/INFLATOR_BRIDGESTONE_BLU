@@ -1,0 +1,36 @@
+#include <EEPROM.h>
+
+int address = 0;
+
+void writeLongIntoEEPROM(int address, long value)
+{
+  EEPROM.write(address , (value >> 24) & 0xFF);
+  EEPROM.write(address + 1, (value >> 16) & 0xFF);
+  EEPROM.write(address + 2, (value >> 8) & 0xFF);
+  EEPROM.write(address + 3, value & 0xFF);
+}
+
+long readLongFromEEPROM(int address)
+{
+  return ((long)EEPROM.read(address ) << 24) +
+         ((long)EEPROM.read(address + 1) << 16) +
+         ((long)EEPROM.read(address + 2) << 8 ) +
+         (long)EEPROM.read(address + 3);
+}
+long value = 0;
+
+void setup() {
+  Serial.begin (9600);
+  Serial.print(F("Your last Pin : "));
+  value = readLongFromEEPROM (100);
+  Serial.println(value);
+}
+
+void loop() {
+  delay(2000);
+  value += 2500 ;
+  writeLongIntoEEPROM(100, value);
+  Serial.print(F("Your new pin : "));
+  value = readLongFromEEPROM (100);
+  Serial.println(value);
+}
