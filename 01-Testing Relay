@@ -1,0 +1,76 @@
+int tombolStart1 = 4; //StartActive-pengisian ke 1
+int tombolStart2 = 5; //StartActive-pengisian ke 2
+int valStart1 = 0; //nilaiButton1
+int valStart2 = 0; //nilaiButton2
+
+int relaySV = 6;      //activasi SalenoidValveInlation
+int relayHolding = 7;  //delayHolding
+
+int timingStart1 = 0; //delay timing Start ke 1
+int timingStart2 = 0; //delay timing Start ke 2
+
+int onceHolding = 0;
+int onceStart1 = 0;
+int onceStart2 = 0;
+
+
+int var = 0;
+void setup() {
+  Serial.begin(9600);
+  pinMode(relaySV, OUTPUT);
+  pinMode(relayHolding, OUTPUT);
+  pinMode(tombolStart1, INPUT_PULLUP);
+  pinMode(tombolStart2, INPUT_PULLUP);
+  timingStart1 = 25000;
+  timingStart2 = 13000;
+}
+
+void loop() {
+  switch (var) {
+    case 0:
+      tombol();
+      digitalWrite(relaySV, HIGH);
+      digitalWrite(relayHolding, HIGH);
+      if (onceHolding = 0) {
+        digitalWrite(relayHolding, LOW);
+        delay(10000);
+        digitalWrite(relayHolding, HIGH);
+        onceHolding = 1;
+      }
+      onceStart1 = 0;
+      onceStart2 = 0;
+      Serial.println("case 0");
+      break;
+
+    case 1:
+      tombol ();
+      digitalWrite(relayHolding, HIGH);
+      if (onceStart1 = 0) {
+        digitalWrite(relaySV, LOW);
+        delay (timingStart1);
+        onceStart1 = 1;
+        digitalWrite(relaySV, HIGH);
+        digitalWrite(relayHolding, LOW);
+        delay(8000);
+      }
+      Serial.println("case 1");
+      break;
+
+    case 2:
+      tombol ();
+      digitalWrite(relayHolding, HIGH);
+      if (onceStart2 = 0) {
+        digitalWrite(relaySV, LOW);
+        delay (timingStart2);
+        onceStart2 = 1;
+        digitalWrite(relaySV, HIGH);
+        digitalWrite(relayHolding, LOW);
+        delay(8000);
+      }
+      var = 0;
+      Serial.println("case 2");
+      break;
+  }
+  Serial.print("var = ");
+  Serial.println(var);
+}
