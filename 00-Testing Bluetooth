@@ -1,0 +1,28 @@
+#include <SoftwareSerial.h>
+SoftwareSerial BTserial(2, 3); // TX | RX
+int value1 = 0;
+int value2 = 0;
+void setup()
+{
+  Serial.begin(9600);
+  BTserial.begin(9600);
+}
+
+void loop()
+{
+  if (BTserial.available() > 0)
+  {
+    int buff1 = BTserial.read();
+    value1 = buff1 * 100;
+    Serial.print("nilai 1 = ");
+    Serial.println(value1);
+
+    if (BTserial.available() > 0)
+    {
+      int buff2 = BTserial.read();
+      value2 = buff2 * 100;
+      Serial.print("nilai 2 = ");
+      Serial.println(value2);
+    }
+  }
+}
